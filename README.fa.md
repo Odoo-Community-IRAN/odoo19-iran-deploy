@@ -26,11 +26,13 @@
 
 ### Ubuntu 22.04 (Jammy)
 
+</div>
+
 ```bash
 sudo nano /etc/apt/sources.list
 ```
 
-محتوا را با این جایگزین کنید:
+<div align="right" dir="rtl">محتوا را با این جایگزین کنید:</div>
 
 ```
 deb [trusted=yes] http://mirror.arvancloud.ir/ubuntu jammy main restricted universe multiverse
@@ -39,13 +41,17 @@ deb [trusted=yes] http://mirror.arvancloud.ir/ubuntu jammy-backports main restri
 deb [trusted=yes] http://mirror.arvancloud.ir/ubuntu jammy-security main restricted universe multiverse
 ```
 
+<div align="right" dir="rtl">
+
 ### Ubuntu 24.04 (Noble)
+
+</div>
 
 ```bash
 sudo nano /etc/apt/sources.list.d/ubuntu.sources
 ```
 
-محتوا را با این جایگزین کنید:
+<div align="right" dir="rtl">محتوا را با این جایگزین کنید:</div>
 
 ```
 deb https://mirror.iranserver.com/ubuntu/ noble main restricted
@@ -61,7 +67,7 @@ deb https://mirror.iranserver.com/ubuntu/ noble-security multiverse
 deb http://mirror.arvancloud.ir/ubuntu noble universe
 ```
 
-سپس آپدیت کنید:
+<div align="right" dir="rtl">سپس آپدیت کنید:</div>
 
 ```bash
 sudo apt-get update
@@ -69,7 +75,11 @@ sudo apt-get update
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۱ — نصب پیش‌نیازهای سیستم
+
+</div>
 
 ```bash
 sudo apt install -y \
@@ -85,21 +95,23 @@ sudo apt install -y \
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۲ — نصب wkhtmltopdf
 
 wkhtmltopdf برای تولید گزارش‌های PDF ضروری است. روی Ubuntu 22.04/24.04 ابتدا باید `libssl1.1` نصب شود.
 
+</div>
+
 ```bash
-# دانلود libssl1.1 از میرور داخلی
 wget https://dl.odoo-community.ir/odoo-tools/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -O /tmp/libssl1.1.deb
 sudo dpkg -i /tmp/libssl1.1.deb
 
-# دانلود و نصب wkhtmltopdf
 wget https://dl.odoo-community.ir/odoo-tools/wkhtmltox_0.12.5-1.bionic_amd64.deb -O /tmp/wkhtmltox.deb
 sudo gdebi --n /tmp/wkhtmltox.deb
 ```
 
-تأیید نصب:
+<div align="right" dir="rtl">تأیید نصب:</div>
 
 ```bash
 wkhtmltopdf --version
@@ -107,20 +119,26 @@ wkhtmltopdf --version
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۳ — نصب Node.js و پشتیبانی RTL
 
 Odoo برای کامپایل asset ها به Node.js و برای چیدمان راست‌به‌چپ فارسی/عربی به `rtlcss` نیاز دارد.
 
+</div>
+
 ```bash
 sudo apt-get install nodejs npm -y
-
-# نصب rtlcss از میرور داخلی npm
 sudo npm install -g rtlcss --registry=https://mirror2.chabokan.net/npm/
 ```
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۴ — ایجاد کاربر سیستمی Odoo
+
+</div>
 
 ```bash
 sudo adduser --system --quiet --shell=/bin/bash --home=/opt/odoo19 --group odoo19
@@ -128,11 +146,17 @@ sudo adduser --system --quiet --shell=/bin/bash --home=/opt/odoo19 --group odoo1
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۵ — ایجاد کاربر PostgreSQL
+
+</div>
 
 ```bash
 sudo su - postgres -c "createuser -s odoo19 -P"
 ```
+
+<div align="right" dir="rtl">
 
 > از شما رمز خواسته می‌شود. آن را برای فایل تنظیمات در مرحله ۸ نگه دارید.
 
@@ -140,21 +164,17 @@ sudo su - postgres -c "createuser -s odoo19 -P"
 
 ## مرحله ۶ — دانلود سورس Odoo 19
 
+</div>
+
 ```bash
-# ایجاد پوشه‌ها
 sudo mkdir -p /opt/odoo19 /etc/odoo /var/log/odoo19
 sudo chown -R odoo19:odoo19 /opt/odoo19 /etc/odoo /var/log/odoo19
 
-# تغییر به کاربر odoo19
 sudo su - odoo19
 
-# دانلود آرشیو سورس
 wget https://dl.odoo-community.ir/odoo-source/odoo19/src_19e.tar.gz
-
-# استخراج
 tar --strip-components=1 -zxf src_19e.tar.gz
 
-# ایجاد فایل odoo-bin
 cat > /opt/odoo19/odoo-bin << 'EOF'
 #!/usr/bin/env python3
 __import__('os').environ['TZ'] = 'UTC'
@@ -164,42 +184,39 @@ if __name__ == "__main__":
 EOF
 chmod +x /opt/odoo19/odoo-bin
 
-# ایجاد پوشه ماژول‌های سفارشی
 mkdir -p /opt/odoo19/custom_addons
-
-# پاک‌سازی آرشیو
 rm src_19e.tar.gz
-
 exit
 ```
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۷ — راه‌اندازی محیط مجازی Python
 
 وابستگی‌های Python را درون محیط مجازی با میرور داخلی PyPI نصب کنید.
+
+</div>
 
 ```bash
 sudo su - odoo19
 cd /opt/odoo19
 
-# ایجاد محیط مجازی
 python3 -m venv venv
 source venv/bin/activate
 
-# نصب نیازمندی‌ها از میرور اصلی
 pip install \
   --trusted-host mirror-pypi.runflare.com \
   -i https://mirror-pypi.runflare.com/simple/ \
   -r requirements.txt
 
-# در صورت خطا، از میرور جایگزین استفاده کنید:
+# در صورت خطا از میرور جایگزین:
 # pip install \
 #   --trusted-host mirror.chabokan.net \
 #   -i https://mirror.chabokan.net/repository/pypi-proxy/simple \
 #   -r requirements.txt
 
-# نصب پکیج‌های اضافی
 pip install psycopg2-binary==2.9.9 pyopenssl==23.2.0
 
 deactivate
@@ -208,9 +225,13 @@ exit
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۸ — ایجاد فایل تنظیمات Odoo
 
 `YOUR_DB_PASSWORD` را با رمز PostgreSQL که در مرحله ۵ تعیین کردید جایگزین کنید.
+
+</div>
 
 ```bash
 sudo nano /etc/odoo/odoo19.conf
@@ -233,11 +254,15 @@ sudo chown odoo19:odoo19 /etc/odoo/odoo19.conf
 sudo chmod 640 /etc/odoo/odoo19.conf
 ```
 
+<div align="right" dir="rtl">
+
 > ⚠️ مقدار `admin_passwd` را به یک رشته تصادفی قوی تغییر دهید.
 
 ---
 
 ## مرحله ۹ — ایجاد سرویس Systemd
+
+</div>
 
 ```bash
 sudo nano /etc/systemd/system/odoo19.service
@@ -273,7 +298,11 @@ sudo systemctl start odoo19
 
 ---
 
+<div align="right" dir="rtl">
+
 ## مرحله ۱۰ — نصب Nginx (اختیاری)
+
+</div>
 
 ```bash
 sudo apt-get install nginx -y
@@ -322,18 +351,20 @@ sudo nginx -t && sudo systemctl restart nginx
 
 ---
 
+<div align="right" dir="rtl">
+
 ## تأیید نهایی
 
-```bash
-# بررسی وضعیت سرویس
-sudo systemctl status odoo19
+</div>
 
-# مشاهده لاگ‌ها
+```bash
+sudo systemctl status odoo19
 sudo tail -f /var/log/odoo19/odoo.log
 ```
 
-مرورگر را باز کنید و به آدرس زیر بروید:
-**`http://YOUR_SERVER_IP:8069`**
+<div align="right" dir="rtl">
+
+مرورگر را باز کنید و به آدرس زیر بروید: **`http://YOUR_SERVER_IP:8069`**
 
 ---
 
@@ -342,7 +373,7 @@ sudo tail -f /var/log/odoo19/odoo.log
 | مشکل | راه‌حل |
 |------|--------|
 | خطا در `apt update` | آدرس میرورها را در sources.list بررسی کنید |
-| timeout در pip install | از میرور جایگزین: `mirror.chabokan.net` استفاده کنید |
+| timeout در pip install | از میرور جایگزین `mirror.chabokan.net` استفاده کنید |
 | خطای wkhtmltopdf در PDF | نصب `libssl1.1` را تأیید کنید |
 | Odoo اجرا نمی‌شود | لاگ را بررسی کنید: `journalctl -u odoo19 -n 50` |
 | خطای اتصال به دیتابیس | رمز PostgreSQL را با `odoo19.conf` تطبیق دهید |
